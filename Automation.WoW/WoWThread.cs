@@ -200,6 +200,35 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
+		/// Wait until the pixel matches predefined color or timeout
+		/// <param name="x">Client x coords.</param>
+		/// <param name="y">Client y coords.</param>
+		/// <param name="timeout">Timeout in milliseconds, wait infinitely if this parameter is 0..</param>
+		/// <returns>Return RGB value if matches, -1 otherwise.</returns>
+		/// </summary>
+		public int WaitForKnownPixel(int x, int y, int timeout)
+		{
+			DateTime startTime = DateTime.Now;
+			while (true)
+			{
+				int pixel = GetPixel(x, y);
+				if (IsKnownPixel(pixel))
+				{
+					return pixel;
+				}
+
+				if (timeout > 0 && (DateTime.Now - startTime).TotalMilliseconds > timeout)
+				{
+					break;
+				}
+
+				startTime = DateTime.Now;
+			}
+
+			return -1;
+		}
+
+		/// <summary>
 		/// Record current cursor coords, to where all subsequent HideCursor() methods  will move cursor
 		/// </summary>
 		public void SetIdlePoint()
