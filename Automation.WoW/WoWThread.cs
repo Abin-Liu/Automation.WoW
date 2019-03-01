@@ -7,13 +7,14 @@ using Automation.WoW.Libs;
 namespace Automation.WoW
 {
 	/// <summary>
-	/// 继承自AutomationThread的抽象线程类，封装了大部分与WoW窗口交互的通用方法和常量
+	/// Abstract thread class derived from AutomationThread, encapsulated most common
+	/// methods which interact with WoW game window.
 	/// </summary>
 	public abstract class WoWThread : AutomationThread
 	{
-		#region 常量定义
+		#region Constants
 		/// <summary>
-		/// 信号像素颜色定义
+		/// Signal pixel colors
 		/// </summary>
 		public static readonly int Invalid = -1;
 		public static readonly int Red = 0xff0000;
@@ -24,56 +25,95 @@ namespace Automation.WoW
 		public static readonly int Purple = 0xff00ff;
 
 		/// <summary>
-		/// 信号像素在客户端的通常位置
+		/// Common locations of signal pixel (relative to WoW game window client area)
 		/// </summary>
 		public enum ClientPosition { Invalid = -1, TopLeft, Top, TopRight, Right, BottomRight, Bottom, BottomLeft, Left, Center };
 		#endregion
 
-		#region 公开方法
+		#region Public Properties
 		/// <summary>
-		/// 是否需要AntiIdle
+		/// Whether to automatically send anti-idle
 		/// </summary>
-		public bool NeedAntiIdle { get { return (DateTime.Now - m_lastAntiIdle).TotalSeconds > 30; } }
+		public bool AntiIdle { get; set; } = false;
 
 		/// <summary>
-		/// 寻求组队UI是否已出现
+		/// Whether to automatically accept LFD invitations
 		/// </summary>
-		public bool HasLFDUI { get { return GetPixel(ClientPosition.Center) == Blue; } }
-
-		/// <summary>
-		/// WoW内报警UI是否已出现
-		/// </summary>
-		public bool HasAlertUI { get { return GetPixel(ClientPosition.Center) == Purple; } }
-
-		/// <summary>
-		/// WoW是否当前处于窗口模式
-		/// </summary>
-		public bool IsWindowMode
-		{
-			get
-			{
-				Rectangle gameRect = GetClientRect();
-				Rectangle desktopRect = Window.GetClientRect(Window.GetDesktopWindow());
-				return gameRect.Width < desktopRect.Width || gameRect.Height < desktopRect.Height;
-			}
-		}
+		public bool AutoLFD { get; set; } = false;		
 		#endregion
 
-		#region 构造函数
+		#region C'tors
 		/// <summary>
-		/// 默认构造函数
+		/// Default constructor
 		/// </summary>
 		public WoWThread()
 		{
-			TargetWndClass = "GxWindowClass"; // WOW窗口类
+			TargetWndClass = "GxWindowClass"; // WOW window class
+			m_ticker.IsBackground = true;
+			m_ticker.OnTick += _CheckCenterPixel;
+			m_ticker.Start(1500);
 		}
 		#endregion
 
-		#region 扩展方法
+		#region Overrides
 		/// <summary>
-		/// GetPixel方法扩展，以信号像素位置为参数
-		/// <param name="position">信号像素位置</param>
-		/// <returns>像素RGB值</returns>
+		/// Stop the thread and accept LFD invitation, inherited thread need to define the actual keys
+		/// </summary>
+		protected virtual void JoinLFD()
+		{
+			Stop();
+		}
+
+		/// <summary>
+		/// Send anti-idle, usually the {Space} key
+		/// </summary>
+		protected virtual void SendAntiIdle()
+		{
+			KeyStroke(Keys.Space);
+		}
+
+		/// <summary>
+		/// Overload PreStart()
+		/// </summary>
+		protected override bool PreStart()
+		{
+			if (!base.PreStart())
+			{
+				return false;
+			}
+
+			if (!IsTargetWndForeground())
+			{
+				LastError = "Please set WoW window to foreground.";
+				return false;
+			}
+
+			Rectangle gameRect = GetClientRect();
+			Rectangle desktopRect = Window.GetClientRect(Window.GetDesktopWindow());
+			if (gameRect.Width >= desktopRect.Width && gameRect.Height >= desktopRect.Height)
+			{
+				LastError = "Please set WoW to window mode.";
+				return false;
+			}
+
+			return true;			
+		}
+
+		/// <summary>
+		/// Stop the ticker
+		/// </summary>
+		protected override void Dispose(bool disposing)
+		{
+			m_ticker.Dispose();
+			base.Dispose(disposing);			
+		}
+		#endregion
+
+		#region Extended Methods
+		/// <summary>
+		/// Extended GetPixel method
+		/// <param name="position">Signal pixel position</param>
+		/// <returns>RGB value</returns>
 		/// </summary>
 		public int GetPixel(ClientPosition position)
 		{
@@ -82,9 +122,9 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
-		/// 将信号像素位置转换为客户端坐标值
-		/// <param name="position">信号像素位置</param>
-		/// <returns>客户端坐标值</returns>
+		/// Translate a position into client coordinates
+		/// <param name="position">Position</param>
+		/// <returns>Client coordinates</returns>
 		/// </summary>
 		public Point TranslatePosition(ClientPosition position)
 		{
@@ -145,9 +185,9 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
-		/// 检查像素颜色是否为信号像素通用RGB值
-		/// <param name="color">像素颜色</param>
-		/// <returns>如果像素颜色符合则返回true，否则返回false</returns>
+		/// Check whether an RGB value is a predefined sinal color.
+		/// <param name="color">RGB value</param>
+		/// <returns>Return true of matches, false otherwise</returns>
 		/// </summary>
 		public static bool IsKnownPixel(int color)
 		{			
@@ -160,7 +200,7 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
-		/// 以当前鼠标位置为idle位置，后续HideCursor方法将把鼠标移动到此处
+		/// Record current cursor coords, to where all subsequent HideCursor() methods  will move cursor
 		/// </summary>
 		public void SetIdlePoint()
 		{
@@ -178,36 +218,28 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
-		/// 将把鼠标移动到前面调用SetIdlePoint时的位置
+		/// Move cursor to the coords recorded in a previous call of SetIdlePoint()
 		/// </summary>
 		public void HideCursor()
 		{			
 			MouseMove(m_idlePoint.X, m_idlePoint.Y);
 		}
-
-		/// <summary>
-		/// 向WoW窗口发送空格键并记录当前时间
-		/// </summary>
-		public void SendAntiIdle()
-		{
-			KeyStroke(Keys.Space);
-			m_lastAntiIdle = DateTime.Now;
-		}
 		#endregion
 
-		#region 插件相关
+		#region Addon Operations
 		/// <summary>
-		/// 向WoW安装一个插件
-		/// <param name="name">插件名称</param>
-		/// <param name="sourcePath">插件源文件所在目录</param>
-		/// <returns>如果安装成功则返回true，否则返回false</returns>
+		/// Install an addon to WoW addon directory
+		/// <param name="name">Addon name</param>
+		/// <param name="sourcePath">Addon source directory</param>
+		/// <returns>Return true if success, false otherwise</returns>
 		/// </summary>
 		public static bool InstallAddOn(string name, string sourcePath = null)
 		{
+			string AppTitle = Application.ProductName;
 			AddonHelper addon = new AddonHelper();
 			if (!addon.Valid)
 			{
-				MessageBox.Show("无法从系统注册表获得WOW安装目录，请手动指定WOW安装目录（Wow.exe可执行文件所在目录）。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Cannot read WoW install path from registry, please specify.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 				while (true)
 				{
@@ -222,7 +254,7 @@ namespace Automation.WoW
 						break;
 					}
 
-					DialogResult res = MessageBox.Show("\"" + dialog.SelectedPath + "\" 不是一个正确的WOW安装目录，请重新选择（Wow.exe可执行文件所在目录）。", Application.ProductName, MessageBoxButtons.RetryCancel);
+					DialogResult res = MessageBox.Show("\"" + dialog.SelectedPath + "\" is not a correct WoW install path, please select the directory where WoW.exe resides.", AppTitle, MessageBoxButtons.RetryCancel);
 					if (res == DialogResult.Cancel)
 					{
 						break;
@@ -232,7 +264,7 @@ namespace Automation.WoW
 
 			if (!addon.Valid)
 			{
-				MessageBox.Show("未能安装游戏内插件，" + Application.ProductName + "可能无法正常工作。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Failed to install addon, " + AppTitle + " may not work properly.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 
@@ -240,16 +272,16 @@ namespace Automation.WoW
 
 			if (Window.FindWindow("GxWindowClass", null) != IntPtr.Zero)
 			{
-				MessageBox.Show("安装程序检测到WOW正在运行中，你需要大退游戏才能使游戏内插件生效。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("WoW is currently running, you will need to restart the game before using " + AppTitle + ".", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 
 			return true;
 		}
 
 		/// <summary>
-		/// 卸载一个WoW插件
-		/// <param name="name">插件名称</param>
-		/// <returns>如果卸载成功则返回true，否则返回false</returns>
+		/// Uninstall an addon
+		/// <param name="name">Addon name</param>
+		/// <returns>Return true if success, false otherwise.</returns>
 		/// </summary>
 		public static bool UninstallAddOn(string name)
 		{
@@ -257,9 +289,9 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
-		/// 检查某个WoW插件是否存在
-		/// <param name="name">插件名称</param>
-		/// <returns>如果插件存在则返回true，否则返回false</returns>
+		/// Check whether an addon exists
+		/// <param name="name">Addon name</param>
+		/// <returns>Return true if the addon exists, false otherwise</returns>
 		/// </summary>
 		public static bool AddOnExists(string name)
 		{
@@ -267,9 +299,49 @@ namespace Automation.WoW
 		}
 		#endregion
 
-		#region 私有成员
-		private DateTime m_lastAntiIdle = DateTime.Now;
-		Point m_idlePoint = new Point(0, 0);
+		#region Private Members
+		// Check the center pixel periodically
+		private void _CheckCenterPixel()
+		{			
+			DateTime now = DateTime.Now;
+			if ((now - m_lastCheckCenter).TotalSeconds < 1.5)
+			{
+				return;
+			}
+
+			if (TargetWnd == IntPtr.Zero || !IsTargetWndForeground())
+			{
+				return;
+			}
+
+			m_lastCheckCenter = now;
+			int pixel = GetPixel(ClientPosition.Center);
+			if (!IsKnownPixel(pixel))
+			{
+				pixel = 0;
+			}
+
+			if (pixel == Red)
+			{
+				if (AntiIdle)
+				{
+					SendAntiIdle();
+				}
+			}
+			else if (pixel == Blue)
+			{
+				if (AutoLFD)
+				{
+					JoinLFD();
+				}
+			}
+
+			Alerting = pixel == Purple; // Sound alarm if the in-game alert frame is shown
+		}
+
+		private DateTime m_lastCheckCenter = DateTime.Now;
+		private Point m_idlePoint = new Point(0, 0);
+		private TickThread m_ticker = new TickThread();		
 		#endregion
 	}
 }
