@@ -48,7 +48,7 @@ namespace Automation.WoW
 		/// </summary>
 		public WoWThread()
 		{
-			TargetWndClass = "GxWindowClass"; // WOW window class
+			TargetWndClass = WOW_WND_CLASS;
 			m_ticker.IsBackground = true;
 			m_ticker.OnTick += _CheckCenterPixel;
 			m_ticker.Start(1500);
@@ -84,7 +84,7 @@ namespace Automation.WoW
 
 			if (!IsTargetWndForeground())
 			{
-				LastError = "Please set WoW window to foreground.";
+				LastError = Localize("Please set WoW window to foreground.");
 				return false;
 			}
 
@@ -92,7 +92,7 @@ namespace Automation.WoW
 			Rectangle desktopRect = Window.GetClientRect(Window.GetDesktopWindow());
 			if (gameRect.Width >= desktopRect.Width && gameRect.Height >= desktopRect.Height)
 			{
-				LastError = "Please set WoW to window mode.";
+				LastError = Localize("Please set WoW to window mode.");
 				return false;
 			}
 
@@ -106,6 +106,20 @@ namespace Automation.WoW
 		{
 			m_ticker.Dispose();
 			base.Dispose(disposing);			
+		}
+
+		protected override void OnLocalize()
+		{
+			base.OnLocalize();
+			Locale locale;
+
+			locale = RegisterLocale("zh-CN");
+			locale["Please set WoW window to foreground."] = "请先将WoW窗口置于前台。";
+			locale["Please set WoW to window mode."] = "请先将WoW窗口设置为窗口模式。";
+
+			locale = RegisterLocale("zh-TW");
+			locale["Please set WoW window to foreground."] = "請先將WoW窗體置於前台。";
+			locale["Please set WoW to window mode."] = "請先將WoW窗體設置為窗口模式。";
 		}
 		#endregion
 
@@ -283,7 +297,7 @@ namespace Automation.WoW
 						break;
 					}
 
-					DialogResult res = MessageBox.Show("\"" + dialog.SelectedPath + "\" is not a correct WoW install path, please select the directory where WoW.exe resides.", AppTitle, MessageBoxButtons.RetryCancel);
+					DialogResult res = MessageBox.Show(string.Format("{0} is not a correct WoW install path, please select the directory where WoW.exe resides.", dialog.SelectedPath), AppTitle, MessageBoxButtons.RetryCancel);
 					if (res == DialogResult.Cancel)
 					{
 						break;
@@ -293,15 +307,15 @@ namespace Automation.WoW
 
 			if (!addon.Valid)
 			{
-				MessageBox.Show("Failed to install addon, " + AppTitle + " may not work properly.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Failed to install addon.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 
 			addon.InstallAddOn(sourcePath, name);
 
-			if (Window.FindWindow("GxWindowClass", null) != IntPtr.Zero)
+			if (Window.FindWindow(WOW_WND_CLASS, null) != IntPtr.Zero)
 			{
-				MessageBox.Show("WoW is currently running, you will need to restart the game before using " + AppTitle + ".", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("WoW is currently running, you will need to restart the game before the installed addon takes effect.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 
 			return true;
@@ -368,6 +382,7 @@ namespace Automation.WoW
 			Alerting = pixel == Purple; // Sound alarm if the in-game alert frame is shown
 		}
 
+		private static readonly string WOW_WND_CLASS = "GxWindowClass";
 		private DateTime m_lastCheckCenter = DateTime.Now;
 		private Point m_idlePoint = new Point(0, 0);
 		private TickThread m_ticker = new TickThread();		
