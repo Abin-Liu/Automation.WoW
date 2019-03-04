@@ -89,7 +89,7 @@ namespace Automation.WoW
 				return false;
 			}
 
-			Rectangle gameRect = GetClientRect();
+			Rectangle gameRect = ClientRect;
 			Rectangle desktopRect = Window.GetClientRect(Window.GetDesktopWindow());
 			if (gameRect.Width >= desktopRect.Width && gameRect.Height >= desktopRect.Height)
 			{
@@ -113,24 +113,13 @@ namespace Automation.WoW
 
 		#region Extended Methods
 		/// <summary>
-		/// Extended GetPixel method
-		/// <param name="position">Signal pixel position</param>
-		/// <returns>RGB value</returns>
-		/// </summary>
-		public int GetPixel(ClientPosition position)
-		{
-			Point point = TranslatePosition(position);
-			return GetPixel(point.X, point.Y);
-		}
-
-		/// <summary>
 		/// Translate a position into client coordinates
 		/// <param name="position">Position</param>
 		/// <returns>Client coordinates</returns>
 		/// </summary>
 		public Point TranslatePosition(ClientPosition position)
 		{
-			Rectangle rect = GetClientRect();
+			Rectangle rect = ClientRect;
 			Point point = new Point(0, 0);
 			switch (position)
 			{
@@ -202,6 +191,44 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
+		/// Extended GetPixel method
+		/// <param name="position">Signal pixel position</param>
+		/// <returns>RGB value</returns>
+		/// </summary>
+		public int GetPixel(ClientPosition position)
+		{
+			Point point = TranslatePosition(position);
+			return GetPixel(point.X, point.Y);
+		}
+
+		/// <summary> 
+		/// Keeps checking whether a pixel of the target window matches specified RGB values
+		/// <param name="position">Signal pixel position</param>		
+		/// <param name="r">R component</param> 
+		/// <param name="g">G component</param> 
+		/// <param name="b">B component</param> 
+		/// <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+		/// <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+		/// </summary>
+		public bool WaitForPixel(ClientPosition position, byte r, byte g, byte b, int timeout)
+		{
+			return WaitForPixel(position, RGB(r, g, b), timeout);
+		}
+
+		/// <summary> 
+		/// Keeps checking whether a pixel of the target window matches specified RGB values
+		/// <param name="position">Signal pixel position</param>		
+		/// <param name="color">The RGB value</param> 		
+		/// <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+		/// <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+		/// </summary>
+		public bool WaitForPixel(ClientPosition position, int color, int timeout)
+		{
+			Point point = TranslatePosition(position);
+			return WaitForPixel(point.X, point.Y, color, timeout);
+		}
+
+		/// <summary>
 		/// Wait until the pixel matches predefined color or timeout
 		/// <param name="x">Client x coords.</param>
 		/// <param name="y">Client y coords.</param>
@@ -231,6 +258,18 @@ namespace Automation.WoW
 		}
 
 		/// <summary>
+		/// Wait until the pixel matches predefined color or timeout
+		/// <param name="position">Client position.</param>
+		/// <param name="timeout">Timeout in milliseconds, wait infinitely if this parameter is 0..</param>
+		/// <returns>Return RGB value if matches, -1 otherwise.</returns>
+		/// </summary>
+		public int WaitForKnownPixel(ClientPosition position, int timeout)
+		{
+			Point point = TranslatePosition(position);
+			return WaitForKnownPixel(point.X, point.Y, timeout);
+		}
+
+		/// <summary>
 		/// Record current cursor coords, to where all subsequent HideCursor() methods  will move cursor
 		/// </summary>
 		public void SetIdlePoint()
@@ -239,7 +278,7 @@ namespace Automation.WoW
 			Point offset = Window.ScreenToClient(TargetWnd);
 			cursor.Offset(offset);
 
-			Rectangle rect = GetClientRect();
+			Rectangle rect = ClientRect;
 			if (!rect.Contains(cursor))
 			{
 				cursor.X = rect.Left + rect.Width / 2 + 300;
