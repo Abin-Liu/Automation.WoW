@@ -47,11 +47,12 @@ namespace Automation.WoW
 		/// Default constructor
 		/// </summary>
 		public WoWThread()
-		{
+		{			
 			TargetWndClass = WOW_WND_CLASS;
 			m_ticker.IsBackground = true;
 			m_ticker.OnTick += _CheckCenterPixel;
 			m_ticker.Start(1500);
+			InitLocales();
 		}
 		#endregion
 
@@ -107,20 +108,7 @@ namespace Automation.WoW
 			m_ticker.Dispose();
 			base.Dispose(disposing);			
 		}
-
-		protected override void OnLocalize()
-		{
-			base.OnLocalize();
-			Locale locale;
-
-			locale = RegisterLocale("zh-CN");
-			locale["Please set WoW window to foreground."] = "请先将WoW窗口置于前台。";
-			locale["Please set WoW to window mode."] = "请先将WoW窗口设置为窗口模式。";
-
-			locale = RegisterLocale("zh-TW");
-			locale["Please set WoW window to foreground."] = "請先將WoW窗體置於前台。";
-			locale["Please set WoW to window mode."] = "請先將WoW窗體設置為窗口模式。";
-		}
+		
 		#endregion
 
 		#region Extended Methods
@@ -282,7 +270,7 @@ namespace Automation.WoW
 			AddonHelper addon = new AddonHelper();
 			if (!addon.Valid)
 			{
-				MessageBox.Show("Cannot read WoW install path from registry, please specify.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(Localize("Cannot read WoW install path from registry, please specify."), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 				while (true)
 				{
@@ -297,7 +285,7 @@ namespace Automation.WoW
 						break;
 					}
 
-					DialogResult res = MessageBox.Show(string.Format("{0} is not a correct WoW install path, please select the directory where WoW.exe resides.", dialog.SelectedPath), AppTitle, MessageBoxButtons.RetryCancel);
+					DialogResult res = MessageBox.Show(string.Format(Localize("{0} is not a correct WoW install path, please select the directory where WoW.exe resides."), dialog.SelectedPath), AppTitle, MessageBoxButtons.RetryCancel);
 					if (res == DialogResult.Cancel)
 					{
 						break;
@@ -307,7 +295,7 @@ namespace Automation.WoW
 
 			if (!addon.Valid)
 			{
-				MessageBox.Show("Failed to install addon.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(Localize("Failed to install addon."), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 
@@ -315,7 +303,7 @@ namespace Automation.WoW
 
 			if (Window.FindWindow(WOW_WND_CLASS, null) != IntPtr.Zero)
 			{
-				MessageBox.Show("WoW is currently running, you will need to restart the game before the installed addon takes effect.", AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(Localize("WoW is currently running, you will need to restart the game before the installed addon takes effect."), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 
 			return true;
@@ -380,6 +368,28 @@ namespace Automation.WoW
 			}
 
 			Alerting = pixel == Purple; // Sound alarm if the in-game alert frame is shown
+		}
+
+		private static void InitLocales()
+		{
+			Locale locale;
+
+			locale = RegisterLocale("zh-CN");
+			locale["Please set WoW window to foreground."] = "请先将WoW窗口置于前台。";
+			locale["Please set WoW to window mode."] = "请先将WoW窗口设置为窗口模式。";
+			locale["Cannot read WoW install path from registry, please specify."] = "无法从系统注册表获取WoW安装路径。请手动指定。";
+			locale["{0} is not a correct WoW install path, please select the directory where WoW.exe resides."] = "{0} 不是一个正确的WoW安装目录，请选择WoW.exe文件所在目录。";
+			locale["Failed to install addon."] = "插件安装失败。";
+			locale["WoW is currently running, you will need to restart the game before the installed addon takes effect."] = "WoW正在运行中，你需要重启游戏才能让插件生效。";
+
+			locale = RegisterLocale("zh-TW");
+			locale["Please set WoW window to foreground."] = "請先將WoW窗體置於前台。";
+			locale["Please set WoW to window mode."] = "請先將WoW窗體設置為窗口模式。";
+			locale["Cannot read WoW install path from registry, please specify."] = "無法從系統註冊表獲取WoW安裝路徑，請手動指定。";
+			locale["{0} is not a correct WoW install path, please select the directory where WoW.exe resides."] = "{0} 不是一個正確的WoW安裝目錄，請選擇WoW.exe文件所在目錄。";
+			locale["Failed to install addon."] = "插件安裝失敗。";
+			locale["WoW is currently running, you will need to restart the game before the installed addon takes effect."] = "WoW正在運行中，你需要重啟遊戲才能讓插件生效。";
+
 		}
 
 		private static readonly string WOW_WND_CLASS = "GxWindowClass";
