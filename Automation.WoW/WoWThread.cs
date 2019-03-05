@@ -52,7 +52,7 @@ namespace Automation.WoW
 			m_ticker.IsBackground = true;
 			m_ticker.OnTick += _CheckCenterPixel;
 			m_ticker.Start(1500);
-			InitLocales();
+			RegisterLocales(); // Static method for localization
 		}
 		#endregion
 
@@ -315,7 +315,11 @@ namespace Automation.WoW
 				{
 					FolderBrowserDialog dialog = new FolderBrowserDialog();
 					dialog.ShowNewFolderButton = false;
-					dialog.ShowDialog();
+					DialogResult res = dialog.ShowDialog();
+					if (res != DialogResult.OK)
+					{
+						break;
+					}
 
 					if (AddonHelper.IsWowPath(dialog.SelectedPath))
 					{
@@ -324,7 +328,7 @@ namespace Automation.WoW
 						break;
 					}
 
-					DialogResult res = MessageBox.Show(string.Format(Localize("{0} is not a correct WoW install path, please select the directory where WoW.exe resides."), dialog.SelectedPath), AppTitle, MessageBoxButtons.RetryCancel);
+					res = MessageBox.Show(string.Format(Localize("{0} is not a correct WoW install path, please select the directory where WoW.exe resides."), dialog.SelectedPath), AppTitle, MessageBoxButtons.RetryCancel);
 					if (res == DialogResult.Cancel)
 					{
 						break;
@@ -409,7 +413,7 @@ namespace Automation.WoW
 			Alerting = pixel == Purple; // Sound alarm if the in-game alert frame is shown
 		}
 
-		private static void InitLocales()
+		private static void RegisterLocales()
 		{
 			Locale locale;
 
