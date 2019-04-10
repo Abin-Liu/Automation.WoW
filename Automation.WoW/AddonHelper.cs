@@ -12,7 +12,7 @@ using System;
 using Microsoft.Win32;
 using System.IO;
 
-namespace Automation.WoW.Libs
+namespace Automation.WoW
 {
 	class AddonHelper
 	{
