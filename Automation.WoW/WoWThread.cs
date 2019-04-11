@@ -6,6 +6,11 @@ using Automation.Win32API;
 namespace Automation.WoW
 {
 	/// <summary>
+	/// Client positions where signal-pixels can appear
+	/// </summary>
+	public enum ClientPosition { Invalid = -1, TopLeft, Top, TopRight, Right, BottomRight, Bottom, BottomLeft, Left, Center };
+
+	/// <summary>
 	/// Abstract thread class derived from AutomationThread, encapsulated most common
 	/// methods which interact with WoW game window.
 	/// </summary>
@@ -86,6 +91,68 @@ namespace Automation.WoW
 
 		#region Target Window Pixel Access
 		/// <summary>
+		/// Translate a position into client coordinates
+		/// <param name="position">Position</param>
+		/// <returns>Client coordinates</returns>
+		/// </summary>
+		public Point TranslatePosition(ClientPosition position)
+		{
+			Point point = new Point(0, 0);
+			switch (position)
+			{
+				case ClientPosition.TopLeft:
+					point.X = 0;
+					point.Y = 0;
+					break;
+
+				case ClientPosition.Top:
+					point.X = ClientRect.Width / 2;
+					point.Y = 0;
+					break;
+
+				case ClientPosition.TopRight:
+					point.X = ClientRect.Width - 1;
+					point.Y = 0;
+					break;
+
+				case ClientPosition.Right:
+					point.X = ClientRect.Width - 1;
+					point.Y = ClientRect.Height / 2;
+					break;
+
+				case ClientPosition.BottomRight:
+					point.X = ClientRect.Width - 1;
+					point.Y = ClientRect.Height - 1;
+					break;
+
+				case ClientPosition.Bottom:
+					point.X = ClientRect.Width / 2;
+					point.Y = ClientRect.Height - 1;
+					break;
+
+				case ClientPosition.BottomLeft:
+					point.X = 0;
+					point.Y = ClientRect.Height - 1;
+					break;
+
+				case ClientPosition.Left:
+					point.X = 0;
+					point.Y = ClientRect.Height / 2;
+					break;
+
+				case ClientPosition.Center:
+					point.X = ClientRect.Width / 2;
+					point.Y = ClientRect.Height / 2;
+					break;
+
+				default:
+					break;
+			}
+
+			return point;
+		}
+
+		/// <summary>
 		/// Check whether an RGB value is a predefined sinal color.
 		/// <param name="color">RGB value</param>
 		/// <returns>Return true of matches, false otherwise</returns>
@@ -102,9 +169,10 @@ namespace Automation.WoW
 		/// </summary>
 		public int GetPixel(ClientPosition position)
 		{
-			WoWDC dc = new WoWDC();
-			dc.Create(TargetWnd, 1, 1);
-			return dc.CaptureAndGetPixcel(position);
+			Point point = TranslatePosition(position);
+			point.Offset(ClientToScreen);
+			WoWDC dc = new WoWDC();			
+			return dc.CaptureAndGetPixel(point.X, point.Y);
 		}
 
 		/// <summary> 
@@ -116,9 +184,10 @@ namespace Automation.WoW
 		/// </summary>
 		public bool WaitForPixel(ClientPosition position, int color, int timeout)
 		{
+			Point point = TranslatePosition(position);
+			point.Offset(ClientToScreen);
 			WoWDC dc = new WoWDC();
-			dc.Create(TargetWnd, 1, 1);
-			return dc.WaitForPixel(position, color, timeout);
+			return dc.WaitForPixel(point.X, point.Y, color, timeout);
 		}
 
 		/// <summary>
@@ -129,9 +198,10 @@ namespace Automation.WoW
 		/// </summary>
 		public int WaitForKnownPixel(ClientPosition position, int timeout)
 		{
+			Point point = TranslatePosition(position);
+			point.Offset(ClientToScreen);
 			WoWDC dc = new WoWDC();
-			dc.Create(TargetWnd, 1, 1);
-			return dc.WaitForKnownPixel(position, timeout);
+			return dc.WaitForKnownPixel(point.X, point.Y, timeout);
 		}
 		#endregion
 
@@ -255,13 +325,8 @@ namespace Automation.WoW
 				return;
 			}
 
-			m_lastCheckCenter = now;			
-			if (!m_dc.Create(TargetWnd))
-			{
-				return;
-			}
-
-			int pixel = m_dc.CaptureAndGetPixcel(ClientPosition.Center);
+			m_lastCheckCenter = now;
+			int pixel = GetPixel(ClientPosition.Center);
 			switch (pixel)
 			{
 				case WoWDC.Red:
@@ -308,7 +373,6 @@ namespace Automation.WoW
 		}
 
 		public static readonly string WOW_WND_CLASS = "GxWindowClass";
-		private WoWDC m_dc = new WoWDC();
 		private DateTime m_lastCheckCenter = DateTime.Now;
 		private Point m_idlePoint = new Point(0, 0);
 		private TickThread m_ticker = new TickThread();			 
