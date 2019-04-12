@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Automation.Win32API;
+using Win32API;
+using MFGLib;
 
 namespace Automation.WoW
 {
@@ -375,7 +376,7 @@ namespace Automation.WoW
 		public static readonly string WOW_WND_CLASS = "GxWindowClass";
 		private DateTime m_lastCheckCenter = DateTime.Now;
 		private Point m_idlePoint = new Point(0, 0);
-		private TickThread m_ticker = new TickThread();			 
+		private TickEventThread m_ticker = new TickEventThread();			 
 		#endregion
 	}
 }
