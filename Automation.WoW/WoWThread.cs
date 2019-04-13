@@ -281,7 +281,7 @@ namespace Automation.WoW
 				return false;
 			}
 
-			addon.InstallAddOn(sourcePath, name);
+			addon.InstallAddOn(name, sourcePath);
 
 			if (Window.FindWindow(WOW_WND_CLASS, null) != IntPtr.Zero)
 			{

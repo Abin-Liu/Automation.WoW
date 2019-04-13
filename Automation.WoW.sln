@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automation.WoW", "Automation.WoW\Automation.WoW.csproj", "{75462712-3AC2-42BD-A124-4BF7BE8C291A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automation.WoW", "Automation.WoW\Automation.WoW.csproj", "{0820E41F-9E2E-4693-ABB8-A8C1522B7127}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automation.WoW.DemoApp", "Automation.WoW.DemoApp\Automation.WoW.DemoApp.csproj", "{238E9B7F-304E-46D0-ADE3-478A06DC034B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{75462712-3AC2-42BD-A124-4BF7BE8C291A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75462712-3AC2-42BD-A124-4BF7BE8C291A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75462712-3AC2-42BD-A124-4BF7BE8C291A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75462712-3AC2-42BD-A124-4BF7BE8C291A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0820E41F-9E2E-4693-ABB8-A8C1522B7127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0820E41F-9E2E-4693-ABB8-A8C1522B7127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0820E41F-9E2E-4693-ABB8-A8C1522B7127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0820E41F-9E2E-4693-ABB8-A8C1522B7127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238E9B7F-304E-46D0-ADE3-478A06DC034B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238E9B7F-304E-46D0-ADE3-478A06DC034B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238E9B7F-304E-46D0-ADE3-478A06DC034B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238E9B7F-304E-46D0-ADE3-478A06DC034B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
