@@ -327,7 +327,7 @@ namespace Automation.WoW
 				return;
 			}
 
-			m_lastCheckCenter = now;
+			m_lastCheckCenter = now;			
 			int pixel = GetPixel(ClientPosition.Center);
 			switch (pixel)
 			{
