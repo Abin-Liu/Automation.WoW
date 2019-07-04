@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Automation.WoW</name>
+    </assembly>
+    <members>
+        <member name="F:Automation.WoW.WoWDC.Red">
+            <summary>
+            Signal pixel colors
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWDC.IsKnownPixel(System.Int32)">
+            <summary>
+            Check whether an RGB value is a predefined sinal color.
+            <param name="color">RGB value</param>
+            <returns>Return true of matches, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWDC.WaitForKnownPixel(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Wait until the pixel matches predefined color or timeout
+            <param name="x">Client x coords.</param>
+            <param name="y">Client y coords.</param>
+            <param name="timeout">Timeout in milliseconds, wait infinitely if this parameter is 0..</param>
+            <returns>Return RGB value if matches, -1 otherwise.</returns>
+            </summary>
+        </member>
+        <member name="T:Automation.WoW.ClientPosition">
+            <summary>
+            Client positions where signal-pixels can appear
+            </summary>
+        </member>
+        <member name="T:Automation.WoW.WoWThread">
+            <summary>
+            Abstract thread class derived from AutomationThread, encapsulated most common
+            methods which interact with WoW game window.
+            </summary>
+        </member>
+        <member name="P:Automation.WoW.WoWThread.AntiIdle">
+            <summary>
+            Whether to automatically send anti-idle
+            </summary>
+        </member>
+        <member name="P:Automation.WoW.WoWThread.AutoLFD">
+            <summary>
+            Whether to automatically accept LFD invitations
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.JoinLFD">
+            <summary>
+            Stop the thread and accept LFD invitation, inherited thread need to define the actual keys
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.SendAntiIdle">
+            <summary>
+            Send anti-idle, usually the {Space} key
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.PreStart">
+            <summary>
+            Overload PreStart()
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.Dispose(System.Boolean)">
+            <summary>
+            Stop the ticker
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.TranslatePosition(Automation.WoW.ClientPosition)">
+            <summary>
+            Translate a position into client coordinates
+            <param name="position">Position</param>
+            <returns>Client coordinates</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.IsKnownPixel(System.Int32)">
+            <summary>
+            Check whether an RGB value is a predefined sinal color.
+            <param name="color">RGB value</param>
+            <returns>Return true of matches, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.GetPixel(Automation.WoW.ClientPosition)">
+            <summary>
+            Extended GetPixel method
+            <param name="position">Signal pixel position</param>
+            <returns>RGB value</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.WaitForPixel(Automation.WoW.ClientPosition,System.Int32,System.Int32)">
+            <summary> 
+            Keeps checking whether a pixel of the target window matches specified RGB values
+            <param name="position">Signal pixel position</param>		
+            <param name="color">The RGB value</param>
+            <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+            <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.WaitForKnownPixel(Automation.WoW.ClientPosition,System.Int32)">
+            <summary>
+            Wait until the pixel matches predefined color or timeout
+            <param name="position">Client position.</param>
+            <param name="timeout">Timeout in milliseconds, wait infinitely if this parameter is 0..</param>
+            <returns>Return RGB value if matches, -1 otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.SetIdlePoint">
+            <summary>
+            Record current cursor coords, to where all subsequent HideCursor() methods  will move cursor
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.HideCursor">
+            <summary>
+            Move cursor to the coords recorded in a previous call of SetIdlePoint()
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.InstallAddOn(System.String,System.String)">
+            <summary>
+            Install an addon to WoW addon directory
+            <param name="name">Addon name</param>
+            <param name="sourcePath">Addon source directory</param>
+            <returns>Return true if success, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.UninstallAddOn(System.String)">
+            <summary>
+            Uninstall an addon
+            <param name="name">Addon name</param>
+            <returns>Return true if success, false otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.WoW.WoWThread.AddOnExists(System.String)">
+            <summary>
+            Check whether an addon exists
+            <param name="name">Addon name</param>
+            <returns>Return true if the addon exists, false otherwise</returns>
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,825 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Automation</name>
+    </assembly>
+    <members>
+        <member name="T:Automation.AutomationForm">
+            <summary>
+            A Form derived class controls AutomationThread
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.IsAlive">
+            <summary>
+            Whether the thread is running
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.Aborted">
+            <summary>
+            Whether the thread was stopped by user
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.RegisterBossMode">
+            <summary>
+            Automatically register the {Ctrl-Alt-B} key which triggers boss mode (hide/show the target window)
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.BossMode">
+            <summary>
+            Whether boss mode is on
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.ThreadTickInterval">
+            <summary>
+            Thread tick interval, in milliseconds, 0 to disable ticking
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationForm.HideForm">
+            <summary>
+            Whether hide main form (using a notification ion?)
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.SetThread(Automation.AutomationThread)">
+            <summary>
+            Set the thread member
+            <param name="thread">An object derived from AutomationThread</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.StartThread">
+            <summary> 
+            Start the thread
+            <returns>Return true if the thread starts successfully, false otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.StopThread">
+            <summary>
+            Stop the thread
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.ToggleThread">
+            <summary>
+            Toggle the thread
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.Confirm(System.String)">
+            <summary>
+            Display a confirmation dialog with OK and Cancel buttons
+            <param name="text">Message text</param> 
+            <returns>Return true if the user clicks the OK button.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.Message(System.String,System.Windows.Forms.MessageBoxIcon,System.Windows.Forms.MessageBoxButtons)">
+            <summary>
+            Display a message dialog
+            <param name="text">Message text.</param> 
+            <param name="icon">Dialog icon, default is exclamation.</param>
+            <param name="buttons">Dialog buttons, default is single OK.</param>
+            <returns>Return the user choice.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnThreadStart">
+            <summary>
+            Thread started
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnThreadAbort">
+            <summary>
+            Thread aborted
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnThreadStop">
+            <summary>
+            Thread stopped
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnHotKey(System.Int32)">
+            <summary>
+            The user pressed a registered hotkey (Pause and Cyrl-Alt-B are exclused)
+            <param name="id">Hotkey id</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnThreadMessage(System.Int32,System.Int32)">
+            <summary>
+            Event received from the thread
+            <param name="wParam">wParam</param>
+            <param name="lParam">lParam</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnMessage(System.Int32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Generic event received
+            <param name="message">Message id</param>
+            <param name="wParam">wParam</param>
+            <param name="lParam">lParam</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.OnBossMode(System.Boolean)">
+            <summary>
+            Boss mode changed
+            <param name="bossMode">Boss mode is currently on</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.RegisterMainKey(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Register the main hotkey which starts/stgops the thread
+            </summary>
+            <param name="key">Key value</param>
+            <param name="modifiers">Modifiers（Ctrl, Alt, Shift）, can be combined with | operator</param>
+            <returns>Return true if success, false otherwise.</returns>
+        </member>
+        <member name="M:Automation.AutomationForm.UnregisterMainKey">
+            <summary>
+            Unregister the main hotkey which starts/stgops the thread
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.RegisterHotKey(System.Int32,System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Register a hotkey, whenever the user presses it, the form will be notified
+            <param name="id">Hotkey id</param>
+            <param name="key">Key value</param>
+            <param name="mods">Modifiers（Ctrl, Alt, Shift）, can be combined with | operator</param>
+            <returns>Return true if success, false otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.UnregisterHotKey(System.Int32)">
+            <summary>
+            Unregister a hotkey
+            <param name="id">Hotkey id</param>		
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.Form_OnLoad(System.Object,System.EventArgs)">
+            <summary>
+            Inherited forms must call base.OnFormLoad(sender, e) in their Form_Load
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.Form_OnClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Inherited forms must call base.OnFormClosing(sender, e) in their Form_OnClosing
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.Form_OnClosed(System.Object,System.Windows.Forms.FormClosedEventArgs)">
+            <summary>
+            Inherited forms must call base.OnFormClosed(sender, e) in their Form_OnClosed
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationForm.WndProc(System.Windows.Forms.Message@)">
+            <summary>
+            Override WndProc
+            <param name="m">Message struct</param>		
+            </summary>
+        </member>
+        <member name="T:Automation.AutomationThread">
+            <summary>
+            The abstract thread class interact with the target window
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.TargetWndName">
+            <summary>
+            Text of the target window
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.TargetWndClass">
+            <summary>
+            Class name of the target window
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.TargetWnd">
+            <summary>
+            Handle of the target window
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.ClientRect">
+            <summary> 
+            Client rectangle of the target window, top-left is always 0,0
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.ClientToScreen">
+            <summary> 
+            Win32 ClientToScreen offset
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.ScreenToClient">
+            <summary> 
+            Win32 ScreenToClient offset
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.LastError">
+            <summary> 
+            Thread error messages used by message window
+            </summary> 
+        </member>
+        <member name="P:Automation.AutomationThread.EnableBeeps">
+            <summary>
+            Turn on/off beep sounds for thread start/stop
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.Alerting">
+            <summary> 
+            Start or stop sound alarm
+            </summary>
+        </member>
+        <member name="P:Automation.AutomationThread.IsAlive">
+            <summary> 
+            Whether the thread is running
+            </summary> 
+        </member>
+        <member name="P:Automation.AutomationThread.Aborted">
+            <summary> 
+            Whether the thread was aborted by user
+            </summary> 
+        </member>
+        <member name="P:Automation.AutomationThread.Paused">
+            <summary> 
+            Pause or resume the thread
+            </summary> 
+        </member>
+        <member name="M:Automation.AutomationThread.#ctor">
+            <summary> 
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Finalize">
+            <summary> 
+            Destructor
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Start(System.Windows.Forms.Form,System.Int32)">
+            <summary> 
+            Start the thread
+            <param name="messageForm">The window which receives thread messages, usually the main form</param>
+            <param name="tickInterval">Interval of the ticker, the ticker won't start if the parameter is 0</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Stop">
+            <summary> 
+            Stop the thread
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Sleep(System.Int32)">
+            <summary> 
+            Sleep the current thread
+            <param name="milliseconds">Milliseconds</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Lock(System.Object)">
+            <summary> 
+            Sync lock
+            <param name="obj">Object to lock, use this if null</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Unlock(System.Object)">
+            <summary> 
+            Sync unlock
+            <param name="obj">Object to unlock, use this if null</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.PreStart">
+            <summary> 
+            A callback checking before the thread starts
+            <returns>Return true to allow the thread to start, false otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.OnStart">
+            <summary> 
+            Thread started
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.OnStop">
+            <summary> 
+            Thread stopped
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.OnTick">
+            <summary> 
+            Called periodically during the thread execution
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.ThreadProc">
+            <summary> 
+            Thread work
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.PostMessage(System.Int32,System.Int32)">
+            <summary> 
+            Send a message to the message window
+            <param name="wParam">wParam</param> 
+            <param name="lParam">lParam</param> 		/// 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.IsTargetWndForeground">
+            <summary> 
+            Whether the target window is foreground
+            <returns>Return true if the target window is foreground, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.SetTargetWndForeground">
+            <summary> 
+            Set the target window foreground		
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.DelayBeforeAction(System.Int32)">
+            <summary> 
+            Apply a delay before sending an action for stablity, also check for thread pause status.
+            <param name="milliseconds">Delay in milliseconds</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.GetPixel(System.Int32,System.Int32)">
+            <summary> 
+            Read pixel RGB value from client area of the target window.
+            <param name="x">X coords (relative to client).</param>
+            <param name="y">Y coords (relative to client).</param>
+            <returns>Return RGB value if success, 0 otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.WaitForPixel(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary> 
+            Keeps checking whether a pixel of the target window matches specified RGB values
+            <param name="x">X coords (relative to client)</param> 
+            <param name="y">Y coords (relative to client)</param> 
+            <param name="color">The RGB value</param> 
+            <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+            <param name="sleep">Sleep the running thread between two checks, in millisecond (minimum is 100ms) </param>
+            <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.RGB(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Compose rgb values into an integer
+            </summary>
+            <param name="r">Value of r component</param>
+            <param name="g">Value of g component</param>
+            <param name="b">Value of b component</param>
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:Automation.AutomationThread.RGB(System.Drawing.Color)">
+            <summary>
+            Compose rgb values into an integer, unlike System.Drawing.Color, it eliminates alpha value
+            </summary>
+            <param name="color">Value of color</param>		
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:Automation.AutomationThread.GetRValue(System.Int32)">
+            <summary>
+            Extract the r component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the r component</returns>
+        </member>
+        <member name="M:Automation.AutomationThread.GetGValue(System.Int32)">
+            <summary>
+            Extract the g component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the g component</returns>
+        </member>
+        <member name="M:Automation.AutomationThread.GetBValue(System.Int32)">
+            <summary>
+            Extract the b component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the b component</returns>
+        </member>
+        <member name="M:Automation.AutomationThread.TranslateLocation(System.Int32,System.Int32)">
+            <summary> 
+            Client coords to screen coords
+            <param name="x">Client x coords</param> 
+            <param name="y">Client y coords</param> 
+            <returns>Screen coords</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.TranslateLocation(System.Drawing.Point)">
+            <summary> 
+            Client coords to screen coords
+            <param name="point">Client coords</param> 
+            <returns>Screen coords</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.RegisterLocale(System.String)">
+            <summary> 
+            Register a new locale if not exists		
+            <param name="name">Locale name, such as fr-FR, de-DE, ko-KR, etc</param>
+            <returns>A Locale object</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Localize(System.String)">
+            <summary> 
+            Translate a text into its localized form using current system locale		
+            <param name="key">The en-US form of the text</param>
+            <returns>The localized text</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.MouseClick(System.Int32,System.Int32,System.Windows.Forms.MouseButtons)">
+            <summary> 
+            Click a mouse button inside the target window's client area
+            <param name="x">Client x coords</param> 
+            <param name="y">Client y coords</param> 
+            <param name="button">Mouse button</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.MouseMove(System.Int32,System.Int32)">
+            <summary> 
+            Move the cursor to the target window's client area
+            <param name="x">Client x coords</param> 
+            <param name="y">Client y coords</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.MouseDown(System.Windows.Forms.MouseButtons)">
+            <summary> 
+            Press down a mouse button
+            <param name="button">Mouse button</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.MouseUp(System.Windows.Forms.MouseButtons)">
+            <summary> 
+            Release a mouse button
+            <param name="button">Mouse button</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.MouseWheel(System.Boolean)">
+            <summary> 
+            Scroll the mouse wheel
+            <param name="scrollUp">Wheel direction</param> 
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.KeyStroke(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary> 
+            Send a keystroke	
+            <param name="key">Keys value</param>
+            <param name="mods">Modifiers</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.SendChar(System.Char,Win32API.ModKeys)">
+            <summary> 
+            Send a character		
+            <param name="value">Character value</param>
+            <param name="mods">Modifiers</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.SendChar(System.String,Win32API.ModKeys)">
+            <summary> 
+            Send a character
+            <param name="name">Character name</param>
+            <param name="mods">Modifiers</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.SendString(System.String,System.Int32)">
+            <summary> 
+            Send a character		
+            <param name="contents">The string contents to be sent</param>
+            <param name="delay">Delay between each 2 characters, in milliseconds</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.KeyDown(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary> 
+            Press a key		
+            <param name="key">Keys value</param>
+            <param name="mods">Modifiers</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.KeyUp(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary> 
+            Release a key		
+            <param name="key">Keys value</param>
+            <param name="mods">Modifiers</param>
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Dispose">
+            <summary> 
+            Dispose the object
+            </summary>
+        </member>
+        <member name="M:Automation.AutomationThread.Dispose(System.Boolean)">
+            <summary> 
+            Release unmanaged resources such as device context
+            </summary>
+        </member>
+        <member name="T:Automation.MemDC">
+            <summary>
+            The GDI GetPixel method only suits for single pixel fetching, and will freeze 
+            the screen if a whole region of pixels need to be scanned quickly. ClientDC
+            copies a region of pixels from client area to memory then access them, this solution
+            improves the performance by hundreds times. It can also capture pixels of directX
+            windows.
+            </summary>
+        </member>
+        <member name="F:Automation.MemDC.COLOR_INVALID">
+            <summary>
+            Represents an invalid color value
+            </summary>
+        </member>
+        <member name="P:Automation.MemDC.Bitmap">
+            <summary>
+            The underlying Bitmap object
+            </summary>
+        </member>
+        <member name="M:Automation.MemDC.Capture(System.Drawing.Rectangle)">
+            <summary>
+            Capture a block of pixels from screen to memory
+            </summary>
+            <param name="rect">Boundary of data block</param>
+            <returns>Return true if success, false otherwise</returns>
+        </member>
+        <member name="M:Automation.MemDC.Capture(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Capture a block of pixels from screen to memory
+            </summary>
+            <param name="x">X coord of screen</param>
+            <param name="y">Y coord of screen</param>
+            <param name="width">Width of data block</param>
+            <param name="height">Height of data block</param>
+            <returns>Return true if success, false otherwise</returns>
+        </member>
+        <member name="M:Automation.MemDC.GetPixel(System.Int32,System.Int32)">
+            <summary> 
+            Read pixel RGB value from data block.
+            <param name="x">X coords of mem dc.</param>
+            <param name="y">Y coords of mem dc.</param>
+            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.MemDC.CaptureAndGetPixel(System.Int32,System.Int32)">
+            <summary>
+            Capture single pixel and read it
+            </summary>
+            <param name="x">X coords of screen.</param>
+            <param name="y">Y coords of screen.</param>
+            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
+        </member>
+        <member name="M:Automation.MemDC.WaitForPixel(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary> 
+            Keeps checking whether a pixel of the target window matches specified RGB values
+            <param name="x">X coords of screen</param> 
+            <param name="y">Y coords of screen</param> 
+            <param name="color">The RGB value</param> 
+            <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+            <param name="sleep">Sleep the running thread between two checks, in millisecond (minimum is 100ms) </param>
+            <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.MemDC.Save(System.String)">
+            <summary> 
+            Save the memory block to a file, image formats are automatically determined by file extension.
+            <param name="filePath">Destination file path, will be overwritten if exists.</param>
+            </summary>
+        </member>
+        <member name="M:Automation.MemDC.RGB(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Compose rgb values into an integer
+            </summary>
+            <param name="r">Value of r component</param>
+            <param name="g">Value of g component</param>
+            <param name="b">Value of b component</param>
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:Automation.MemDC.RGB(System.Drawing.Color)">
+            <summary>
+            Compose rgb values into an integer, unlike System.Drawing.Color, it eliminates alpha value
+            </summary>
+            <param name="color">Value of color</param>		
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:Automation.MemDC.GetRValue(System.Int32)">
+            <summary>
+            Extract the r component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the r component</returns>
+        </member>
+        <member name="M:Automation.MemDC.GetGValue(System.Int32)">
+            <summary>
+            Extract the g component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the g component</returns>
+        </member>
+        <member name="M:Automation.MemDC.GetBValue(System.Int32)">
+            <summary>
+            Extract the b component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the b component</returns>
+        </member>
+        <member name="T:Automation.Locale">
+            <summary>
+            Key-value map for locale strings
+            </summary>
+        </member>
+        <member name="P:Automation.Locale.Item(System.String)">
+            <summary>
+            Get or set locale values by key
+            </summary>
+        </member>
+        <member name="P:Automation.LocaleCollection.SystemLocale">
+            <summary>
+            Get system locale: en-US, zh-CN, zh-TW, etc
+            </summary>
+        </member>
+        <member name="M:Automation.LocaleCollection.RegisterLocale(System.String)">
+            <summary>
+            Register a locale if not exists
+            <param name="name">Name of the locale, must comply with System.Globalization.CultureInfo</param>
+            <returns>The locale object</returns>
+            </summary>
+        </member>
+        <member name="M:Automation.LocaleCollection.GetLocalizedString(System.String)">
+            <summary>
+            Retrieve a localized string in current system locale
+            <param name="key">Key of localized string</param>
+            <returns>The locale object</returns>
+            </summary>
+        </member>
+        <member name="T:Automation.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Automation.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Automation.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Automation.Resources.Alert">
+            <summary>
+              Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+            </summary>
+        </member>
+        <member name="P:Automation.Resources.Start">
+            <summary>
+              Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+            </summary>
+        </member>
+        <member name="P:Automation.Resources.Stop">
+            <summary>
+              Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+            </summary>
+        </member>
+        <member name="P:MFGLib.GenericThread.IsAlive">
+            <summary>
+            Check whether the thread is alive
+            </summary>
+        </member>
+        <member name="P:MFGLib.GenericThread.IsBackground">
+            <summary>
+            Get/set whether the thread is background
+            </summary>
+        </member>
+        <member name="P:MFGLib.GenericThread.Aborted">
+            <summary>
+            Check whether the thread was aborted (stopped by throwing a ThreadAbortException)
+            </summary>
+        </member>
+        <member name="P:MFGLib.GenericThread.ThreadState">
+            <summary>
+            Retrive thread state
+            </summary>
+        </member>
+        <member name="M:MFGLib.GenericThread.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="M:MFGLib.GenericThread.Dispose">
+            <summary>
+            Dispose the object
+            </summary>
+        </member>
+        <member name="M:MFGLib.GenericThread.Start">
+            <summary>
+            Start the thread
+            </summary>
+        </member>
+        <member name="M:MFGLib.GenericThread.Stop">
+            <summary>
+            Stop the thread
+            </summary>
+        </member>
+        <member name="M:MFGLib.GenericThread.Lock(System.Object)">
+            <summary>
+            Lock an object
+            </summary>
+            <param name="obj">Object to be marked exclusive</param>
+        </member>
+        <member name="M:MFGLib.GenericThread.Unlock(System.Object)">
+            <summary>
+            Unlock an object
+            </summary>
+            <param name="obj">Object no longer exclusive</param>
+        </member>
+        <member name="M:MFGLib.GenericThread.Sleep(System.Int32)">
+            <summary>
+            Sleep the thread
+            </summary>
+            <param name="milliseconds">Duration in milliseconds</param>
+        </member>
+        <member name="M:MFGLib.GenericThread.GetWorkerProc">
+            <summary>
+            Abstract member to be overridden, derived classes must provider a ThreadStart to start the thread, such like "new ThreadStart(_ThreadProc)"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MFGLib.WorkerThread.OnStart">
+            <summary>
+            Called when the thread starts
+            </summary>
+        </member>
+        <member name="M:MFGLib.WorkerThread.OnStop">
+            <summary>
+            Called when the thread is stopped
+            </summary>
+        </member>
+        <member name="M:MFGLib.WorkerThread.ThreadProc">
+            <summary>
+            Thread working function
+            </summary>
+        </member>
+        <member name="M:MFGLib.WorkerThread.GetWorkerProc">
+            <summary>
+            Provide ThreadStart to base class
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MFGLib.WorkerThread._ThreadProc">
+            <summary>
+            Internal thread process
+            </summary>
+        </member>
+        <member name="P:MFGLib.TickThread.Interval">
+            <summary>
+            Interval between every 2 ticks, in milliseconds, default is 200 ms. Only set upon starting to ensure thread safe
+            </summary>
+        </member>
+        <member name="M:MFGLib.TickThread.Start(System.Int32)">
+            <summary>
+            Start ticking
+            </summary>
+            <param name="interval">Interval between every 2 ticks</param>
+        </member>
+        <member name="M:MFGLib.TickThread.TickProc">
+            <summary>
+            Tick function, called every Interval
+            </summary>
+        </member>
+        <member name="M:MFGLib.TickThread.ThreadProc">
+            <summary>
+            Thread working function
+            </summary>
+        </member>
+        <member name="P:MFGLib.EventThread.OnStart">
+            <summary>
+            Called when the thread starts
+            </summary>
+        </member>
+        <member name="P:MFGLib.EventThread.OnStop">
+            <summary>
+            Called when the thread is stopped
+            </summary>
+        </member>
+        <member name="P:MFGLib.EventThread.ThreadProc">
+            <summary>
+            Thread working function
+            </summary>
+        </member>
+        <member name="M:MFGLib.EventThread._ThreadProc">
+            <summary>
+            Internal thread process
+            </summary>
+        </member>
+        <member name="P:MFGLib.TickEventThread.OnTick">
+            <summary>
+            Called on every tick 
+            </summary>
+        </member>
+        <member name="P:MFGLib.TickEventThread.Interval">
+            <summary>
+            Interval between every 2 ticks, in milliseconds, default is 200 ms. Only set upon starting to ensure thread safe
+            </summary>
+        </member>
+        <member name="M:MFGLib.TickEventThread.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:MFGLib.TickEventThread.Start(System.Int32)">
+            <summary>
+            Start the tick thread
+            </summary>
+            <param name="interval">Interval between every 2 ticks, in milliseconds</param>
+        </member>
+        <member name="M:MFGLib.TickEventThread._TickThreadProc">
+            <summary>
+            Internal tick process
+            </summary>
+        </member>
+        <member name="T:MFGLib.EventThreadHandler">
+            <summary>
+            Type definition of event callback functions
+            </summary>
+        </member>
+    </members>
+</doc>
