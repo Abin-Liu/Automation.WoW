@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Automation">
-      <HintPath>..\..\Automation\Automation\bin\Automation.dll</HintPath>
+      <HintPath>..\..\Automation\Automation\distributes\Automation.dll</HintPath>
     </Reference>
     <Reference Include="Automation.WoW">
-      <HintPath>..\Automation.WoW\bin\Automation.WoW.dll</HintPath>
+      <HintPath>..\Automation.WoW\distributes\Automation.WoW.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

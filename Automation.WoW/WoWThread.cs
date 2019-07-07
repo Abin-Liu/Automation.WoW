@@ -36,7 +36,6 @@ namespace Automation.WoW
 		/// </summary>
 		public WoWThread()
 		{			
-			TargetWndClass = WOW_WND_CLASS;
 			m_ticker.IsBackground = true;
 			m_ticker.OnTick += _CheckCenterPixel;
 			m_ticker.Start(1500);
@@ -45,6 +44,11 @@ namespace Automation.WoW
 		#endregion
 
 		#region Overrides
+		public override IntPtr FindTargetWnd()
+		{
+			return FindWindow(WOW_WND_CLASS, null);
+		}
+
 		/// <summary>
 		/// Stop the thread and accept LFD invitation, inherited thread need to define the actual keys
 		/// </summary>
@@ -283,7 +287,7 @@ namespace Automation.WoW
 
 			addon.InstallAddOn(name, sourcePath);
 
-			if (Window.FindWindow(WOW_WND_CLASS, null) != IntPtr.Zero)
+			if (FindWindow(WOW_WND_CLASS, null) != IntPtr.Zero)
 			{
 				MessageBox.Show(Localize("WoW is currently running, you will need to restart the game before the installed addon takes effect."), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
