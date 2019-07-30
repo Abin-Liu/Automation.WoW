@@ -487,6 +487,13 @@
             <param name="mods">Modifiers</param>
             </summary>
         </member>
+        <member name="M:Automation.AutomationThread.IsKeyDown(System.Windows.Forms.Keys)">
+            <summary>
+            Check whether a key is currently held down
+            </summary>
+            <param name="key">Keys value</param>
+            <returns>Return true if the specified key is held down, false otherwise.</returns>
+        </member>
         <member name="M:Automation.AutomationThread.Dispose">
             <summary> 
             Dispose the object
@@ -707,19 +714,27 @@
             <summary>
             Lock an object
             </summary>
-            <param name="obj">Object to be marked exclusive</param>
+            <param name="target">Object to be marked exclusive</param>
         </member>
         <member name="M:MFGLib.GenericThread.Unlock(System.Object)">
             <summary>
             Unlock an object
             </summary>
-            <param name="obj">Object no longer exclusive</param>
+            <param name="target">Object no longer exclusive</param>
         </member>
         <member name="M:MFGLib.GenericThread.Sleep(System.Int32)">
             <summary>
             Sleep the thread
             </summary>
             <param name="milliseconds">Duration in milliseconds</param>
+        </member>
+        <member name="M:MFGLib.GenericThread.WaitForSingleObject(MFGLib.GenericThread,System.Int32)">
+            <summary>
+            Wait for a thread to stop, the function only return after the thread stops or timeout occurred.
+            </summary>
+            <param name="thread">The target thread to be waited.</param>
+            <param name="timeout">Timeout in milliseconds, 0 means infinite.</param>
+            <returns></returns>
         </member>
         <member name="M:MFGLib.GenericThread.GetWorkerProc">
             <summary>
