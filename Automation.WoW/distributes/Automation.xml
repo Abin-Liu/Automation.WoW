@@ -504,141 +504,6 @@
             Release unmanaged resources such as device context
             </summary>
         </member>
-        <member name="T:Automation.MemDC">
-            <summary>
-            The GDI GetPixel method only suits for single pixel fetching, and will freeze 
-            the screen if a whole region of pixels need to be scanned quickly. ClientDC
-            copies a region of pixels from client area to memory then access them, this solution
-            improves the performance by hundreds times. It can also capture pixels of directX
-            windows.
-            </summary>
-        </member>
-        <member name="F:Automation.MemDC.COLOR_INVALID">
-            <summary>
-            Represents an invalid color value
-            </summary>
-        </member>
-        <member name="P:Automation.MemDC.Bitmap">
-            <summary>
-            The underlying Bitmap object
-            </summary>
-        </member>
-        <member name="M:Automation.MemDC.Capture(System.Drawing.Rectangle)">
-            <summary>
-            Capture a block of pixels from screen to memory
-            </summary>
-            <param name="rect">Boundary of data block</param>
-            <returns>Return true if success, false otherwise</returns>
-        </member>
-        <member name="M:Automation.MemDC.Capture(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Capture a block of pixels from screen to memory
-            </summary>
-            <param name="x">X coord of screen</param>
-            <param name="y">Y coord of screen</param>
-            <param name="width">Width of data block</param>
-            <param name="height">Height of data block</param>
-            <returns>Return true if success, false otherwise</returns>
-        </member>
-        <member name="M:Automation.MemDC.GetPixel(System.Int32,System.Int32)">
-            <summary> 
-            Read pixel RGB value from data block.
-            <param name="x">X coords of mem dc.</param>
-            <param name="y">Y coords of mem dc.</param>
-            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
-            </summary>
-        </member>
-        <member name="M:Automation.MemDC.CaptureAndGetPixel(System.Int32,System.Int32)">
-            <summary>
-            Capture single pixel and read it
-            </summary>
-            <param name="x">X coords of screen.</param>
-            <param name="y">Y coords of screen.</param>
-            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
-        </member>
-        <member name="M:Automation.MemDC.WaitForPixel(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary> 
-            Keeps checking whether a pixel of the target window matches specified RGB values
-            <param name="x">X coords of screen</param> 
-            <param name="y">Y coords of screen</param> 
-            <param name="color">The RGB value</param> 
-            <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
-            <param name="sleep">Sleep the running thread between two checks, in millisecond (minimum is 100ms) </param>
-            <returns>Return true if the pixel matches before timeout, false otherwise</returns>
-            </summary>
-        </member>
-        <member name="M:Automation.MemDC.Save(System.String)">
-            <summary> 
-            Save the memory block to a file, image formats are automatically determined by file extension.
-            <param name="filePath">Destination file path, will be overwritten if exists.</param>
-            </summary>
-        </member>
-        <member name="M:Automation.MemDC.RGB(System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Compose rgb values into an integer
-            </summary>
-            <param name="r">Value of r component</param>
-            <param name="g">Value of g component</param>
-            <param name="b">Value of b component</param>
-            <returns>Integer form of rgb value</returns>
-        </member>
-        <member name="M:Automation.MemDC.RGB(System.Drawing.Color)">
-            <summary>
-            Compose rgb values into an integer, unlike System.Drawing.Color, it eliminates alpha value
-            </summary>
-            <param name="color">Value of color</param>		
-            <returns>Integer form of rgb value</returns>
-        </member>
-        <member name="M:Automation.MemDC.GetRValue(System.Int32)">
-            <summary>
-            Extract the r component from an integer grb value
-            </summary>
-            <param name="color">Integer form of rgb value</param>
-            <returns>Value of the r component</returns>
-        </member>
-        <member name="M:Automation.MemDC.GetGValue(System.Int32)">
-            <summary>
-            Extract the g component from an integer grb value
-            </summary>
-            <param name="color">Integer form of rgb value</param>
-            <returns>Value of the g component</returns>
-        </member>
-        <member name="M:Automation.MemDC.GetBValue(System.Int32)">
-            <summary>
-            Extract the b component from an integer grb value
-            </summary>
-            <param name="color">Integer form of rgb value</param>
-            <returns>Value of the b component</returns>
-        </member>
-        <member name="T:Automation.Locale">
-            <summary>
-            Key-value map for locale strings
-            </summary>
-        </member>
-        <member name="P:Automation.Locale.Item(System.String)">
-            <summary>
-            Get or set locale values by key
-            </summary>
-        </member>
-        <member name="P:Automation.LocaleCollection.SystemLocale">
-            <summary>
-            Get system locale: en-US, zh-CN, zh-TW, etc
-            </summary>
-        </member>
-        <member name="M:Automation.LocaleCollection.RegisterLocale(System.String)">
-            <summary>
-            Register a locale if not exists
-            <param name="name">Name of the locale, must comply with System.Globalization.CultureInfo</param>
-            <returns>The locale object</returns>
-            </summary>
-        </member>
-        <member name="M:Automation.LocaleCollection.GetLocalizedString(System.String)">
-            <summary>
-            Retrieve a localized string in current system locale
-            <param name="key">Key of localized string</param>
-            <returns>The locale object</returns>
-            </summary>
-        </member>
         <member name="T:Automation.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -669,6 +534,151 @@
             <summary>
               Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
             </summary>
+        </member>
+        <member name="T:MFGLib.Locale">
+            <summary>
+            Key-value map for locale strings
+            </summary>
+        </member>
+        <member name="P:MFGLib.Locale.Item(System.String)">
+            <summary>
+            Get or set locale values by key
+            </summary>
+        </member>
+        <member name="T:MFGLib.LocaleCollection">
+            <summary>
+            Locale collection
+            </summary>
+        </member>
+        <member name="F:MFGLib.LocaleCollection.SystemLocale">
+            <summary>
+            Get system locale: en-US, zh-CN, zh-TW, etc
+            </summary>
+        </member>
+        <member name="M:MFGLib.LocaleCollection.#ctor">
+            <summary>
+            Cobstructor
+            </summary>
+        </member>
+        <member name="M:MFGLib.LocaleCollection.RegisterLocale(System.String)">
+            <summary>
+            Register a locale if not exists
+            <param name="name">Name of the locale, must comply with System.Globalization.CultureInfo</param>
+            <returns>The locale object</returns>
+            </summary>
+        </member>
+        <member name="M:MFGLib.LocaleCollection.GetLocalizedString(System.String)">
+            <summary>
+            Retrieve a localized string in current system locale
+            <param name="key">Key of localized string</param>
+            <returns>The locale object</returns>
+            </summary>
+        </member>
+        <member name="T:MFGLib.MemDC">
+            <summary>
+            The GDI GetPixel method only suits for single pixel fetching, and will freeze 
+            the screen if a whole region of pixels need to be scanned quickly. ClientDC
+            copies a region of pixels from client area to memory then access them, this solution
+            improves the performance by hundreds times. It can also capture pixels of directX
+            windows.
+            </summary>
+        </member>
+        <member name="F:MFGLib.MemDC.COLOR_INVALID">
+            <summary>
+            Represents an invalid color value
+            </summary>
+        </member>
+        <member name="P:MFGLib.MemDC.Bitmap">
+            <summary>
+            The underlying Bitmap object
+            </summary>
+        </member>
+        <member name="M:MFGLib.MemDC.Capture(System.Drawing.Rectangle)">
+            <summary>
+            Capture a block of pixels from screen to memory
+            </summary>
+            <param name="rect">Boundary of data block</param>
+            <returns>Return true if success, false otherwise</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.Capture(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Capture a block of pixels from screen to memory
+            </summary>
+            <param name="x">X coord of screen</param>
+            <param name="y">Y coord of screen</param>
+            <param name="width">Width of data block</param>
+            <param name="height">Height of data block</param>
+            <returns>Return true if success, false otherwise</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.GetPixel(System.Int32,System.Int32)">
+            <summary> 
+            Read pixel RGB value from data block.
+            <param name="x">X coords of mem dc.</param>
+            <param name="y">Y coords of mem dc.</param>
+            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
+            </summary>
+        </member>
+        <member name="M:MFGLib.MemDC.CaptureAndGetPixel(System.Int32,System.Int32)">
+            <summary>
+            Capture single pixel and read it
+            </summary>
+            <param name="x">X coords of screen.</param>
+            <param name="y">Y coords of screen.</param>
+            <returns>Return RGB value if success, COLOR_INVALID otherwise.</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.WaitForPixel(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary> 
+            Keeps checking whether a pixel of the target window matches specified RGB values
+            <param name="x">X coords of screen</param> 
+            <param name="y">Y coords of screen</param> 
+            <param name="color">The RGB value</param> 
+            <param name="timeout">Maximum milliseconds before timeout, 0 to check infinitely</param>
+            <param name="sleep">Sleep the running thread between two checks, in millisecond (minimum is 100ms) </param>
+            <returns>Return true if the pixel matches before timeout, false otherwise</returns>
+            </summary>
+        </member>
+        <member name="M:MFGLib.MemDC.Save(System.String)">
+            <summary> 
+            Save the memory block to a file, image formats are automatically determined by file extension.
+            <param name="filePath">Destination file path, will be overwritten if exists.</param>
+            </summary>
+        </member>
+        <member name="M:MFGLib.MemDC.RGB(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Compose rgb values into an integer
+            </summary>
+            <param name="r">Value of r component</param>
+            <param name="g">Value of g component</param>
+            <param name="b">Value of b component</param>
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.RGB(System.Drawing.Color)">
+            <summary>
+            Compose rgb values into an integer, unlike System.Drawing.Color, it eliminates alpha value
+            </summary>
+            <param name="color">Value of color</param>		
+            <returns>Integer form of rgb value</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.GetRValue(System.Int32)">
+            <summary>
+            Extract the r component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the r component</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.GetGValue(System.Int32)">
+            <summary>
+            Extract the g component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the g component</returns>
+        </member>
+        <member name="M:MFGLib.MemDC.GetBValue(System.Int32)">
+            <summary>
+            Extract the b component from an integer grb value
+            </summary>
+            <param name="color">Integer form of rgb value</param>
+            <returns>Value of the b component</returns>
         </member>
         <member name="P:MFGLib.GenericThread.IsAlive">
             <summary>
@@ -839,6 +849,393 @@
             <summary>
             Type definition of event callback functions
             </summary>
+        </member>
+        <member name="T:Win32API.Hotkey">
+            <summary>
+            A helper class for system hot key registration
+            </summary>
+        </member>
+        <member name="M:Win32API.Hotkey.RegisterHotKey(System.IntPtr,System.Int32,System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Register a hotkey
+            </summary>
+            <param name="hWnd">Handle of the window which will receive WM_HOTKEY event</param>
+            <param name="id">Unique identity of the hotkey</param>
+            <param name="vk">Key</param>
+            <param name="mods">Modifiers, default is none</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Hotkey.UnregisterHotKey(System.IntPtr,System.Int32)">
+            <summary>
+            Unregister a hotkey
+            </summary>
+            <param name="hWnd">Handle of the window which was used to register the hotkey</param>
+            <param name="id">Unique identity of the hotkey</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Hotkey.IsHotkeyEvent(System.Windows.Forms.Message@)">
+            <summary>
+            Check whether a window message is a WM_HOTKEY
+            </summary>
+            <param name="m">The message</param>
+            <returns>Return the unique identity of the hotkey if it's a WM_HOTKEY, return -1 otherwise</returns>
+        </member>
+        <member name="T:Win32API.ModKeys">
+            <summary>
+            Modifier keys
+            </summary>
+        </member>
+        <member name="F:Win32API.ModKeys.None">
+            <summary>
+            No modifier
+            </summary>
+        </member>
+        <member name="F:Win32API.ModKeys.Shift">
+            <summary>
+            The SHIFT key is held down
+            </summary>
+        </member>
+        <member name="F:Win32API.ModKeys.Control">
+            <summary>
+            The CONTROL key is held down
+            </summary>
+        </member>
+        <member name="F:Win32API.ModKeys.Alt">
+            <summary>
+            The ALT key is held down
+            </summary>
+        </member>
+        <member name="T:Win32API.Input">
+            <summary>
+            A helper class for keyboard and mouse input simulation
+            </summary>
+        </member>
+        <member name="M:Win32API.Input.MouseMove(System.Int32,System.Int32)">
+            <summary>
+            Move the mouse to a specified screen location
+            </summary>
+            <param name="x">X coords (relative to screen)</param>
+            <param name="y">Y coords (relative to screen)</param>
+        </member>
+        <member name="M:Win32API.Input.MouseDown(System.Windows.Forms.MouseButtons)">
+            <summary>
+            Press down a mouse button
+            </summary>
+            <param name="buttons">The button to be pressed</param>
+        </member>
+        <member name="M:Win32API.Input.MouseUp(System.Windows.Forms.MouseButtons)">
+            <summary>
+            Release a mouse button
+            </summary>
+            <param name="buttons">The button to be released</param>
+        </member>
+        <member name="M:Win32API.Input.MouseClick(System.Windows.Forms.MouseButtons)">
+            <summary>
+            Click a mouse button
+            </summary>
+            <param name="buttons">The button to be clicked</param>
+        </member>
+        <member name="M:Win32API.Input.MouseDblClick(System.Windows.Forms.MouseButtons)">
+            <summary>
+            Double-click a mouse button
+            </summary>
+            <param name="buttons">The button to be clicked</param>
+        </member>
+        <member name="M:Win32API.Input.MouseWheel(System.Boolean)">
+            <summary>
+            Scroll the mouse wheel
+            </summary>
+            <param name="scrollUp">Scroll direction</param>
+        </member>
+        <member name="M:Win32API.Input.ReleaseAllKeys">
+            <summary>
+            Release all keys if held down
+            </summary>
+        </member>
+        <member name="M:Win32API.Input.RemoveRedundantMods(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Remove redundant modifiers which already contained in key
+            </summary>
+            <param name="key">The key</param>
+            <param name="mods">Modifiers</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Input.KeyDown(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Press down a key
+            </summary>
+            <param name="key">The key to be pressed down</param>
+            <param name="mods">Modifiers</param>
+        </member>
+        <member name="M:Win32API.Input.KeyUp(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Release a key
+            </summary>
+            <param name="key">The key to be released</param>
+            <param name="mods">Modifiers</param>
+        </member>
+        <member name="M:Win32API.Input.KeyStroke(System.Windows.Forms.Keys,Win32API.ModKeys)">
+            <summary>
+            Stroke a key
+            </summary>
+            <param name="key">The key to be stroked</param>
+            <param name="mods">Modifiers</param>
+        </member>
+        <member name="M:Win32API.Input.SetCursorPos(System.Int32,System.Int32)">
+            <summary>
+            Set cursor pos to specified screen location
+            </summary>
+            <param name="x">X coords (relative to screen)</param>
+            <param name="y">Y coords (relative to screen)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Input.GetCursorPos">
+            <summary>
+            Retrieve the cursor location
+            </summary>
+            <returns>Return a Point struct contains X and Y coords relative to screen</returns>
+        </member>
+        <member name="M:Win32API.Input.IsKeyDown(System.Windows.Forms.Keys)">
+            <summary>
+            Chec k whether a specified key is currently held down
+            </summary>
+            <param name="key">The key</param>
+            <returns>Return true if the key is held down, false otherwise</returns>
+        </member>
+        <member name="T:Win32API.Window">
+            <summary>
+            a helper class for window manipulation
+            </summary>
+        </member>
+        <member name="M:Win32API.Window.FindWindow(System.String,System.String)">
+            <summary>
+            Find a specified window
+            </summary>
+            <param name="className">Class name of the window, does not exam if null</param>
+            <param name="windowName">Title text of the window, does not exam if null</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Window.IsWindow(System.IntPtr)">
+            <summary>
+            Check whether a window handle is valid
+            </summary>
+            <param name="hwnd">The handle to be examed</param>
+            <returns></returns>
+        </member>
+        <member name="T:Win32API.Window.EnumWindowsCallBack">
+            <summary>
+            Delegate for EnumWindows, it will be called for every window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <param name="lParam">User defined parameter</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Window.EnumWindows(Win32API.Window.EnumWindowsCallBack,System.Int32)">
+            <summary>
+            Enumerate all top-level windows
+            </summary>
+            <param name="callback">The delegate to be called when every window is found</param>
+            <param name="lParam">User defined parameter</param>
+            <returns>Return true if the enumeration completed successfully, false otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.GetWindowText(System.IntPtr)">
+            <summary>
+            Retrieve title text of a window
+            </summary>
+            <param name="hWnd">Handle of the window</param>
+            <returns>Return title text if the handle is valid, null otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.GetClassName(System.IntPtr)">
+            <summary>
+            Retrieve class name of a window
+            </summary>
+            <param name="hWnd">Handle of the window</param>
+            <returns>Return class name if the handle is valid, null otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.GetWindowRect(System.IntPtr)">
+            <summary>
+            Retrieve boundary rectangle of a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return boundary rectangle if the handle is valid, return an empty rectangle otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.GetClientRect(System.IntPtr)">
+            <summary>
+            Retrieve boundary rectangle of the client area a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return boundary rectangle of the client area if the handle is valid, return an empty rectangle otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.ClientToScreen(System.IntPtr)">
+            <summary>
+            Retrieve client-to-screen offset of a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return a Point struct which contain X and Y offsets if the handle is valid, return an empty Point otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.ScreenToClient(System.IntPtr)">
+            <summary>
+            Retrieve screen-to-client offset of a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return a Point struct which contain X and Y offsets if the handle is valid, return an empty Point otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.WindowToScreen(System.IntPtr)">
+            <summary>
+            Retrieve window-to-screen offset of a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return a Point struct which contain X and Y offsets if the handle is valid, return an empty Point otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.ScreenToWindow(System.IntPtr)">
+            <summary>
+            Retrieve screen-to-window offset of a window
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return a Point struct which contain X and Y offsets if the handle is valid, return an empty Point otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.GetForegroundWindow">
+            <summary>
+            Retrieve the foreground window
+            </summary>
+            <returns>Handle of the foreground window</returns>
+        </member>
+        <member name="M:Win32API.Window.SetForegroundWindow(System.IntPtr)">
+            <summary>
+            Set a window to foreground
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns></returns>
+        </member>
+        <member name="M:Win32API.Window.IsMinimized(System.IntPtr)">
+            <summary>
+            Check whether a window is miminized
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return true if the specified window is minimized, false otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.IsMaximized(System.IntPtr)">
+            <summary>
+            Check whether a window is maximized
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return true if the specified window is maxmized, false otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.IsWindowVisible(System.IntPtr)">
+            <summary>
+            Check whether a window is visible
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <returns>Return true if the window is visible, false otherwise</returns>
+        </member>
+        <member name="M:Win32API.Window.ShowWindow(System.IntPtr,System.Int32)">
+            <summary>
+            Display the window in specified way
+            </summary>
+            <param name="hwnd">Handle of the window</param>
+            <param name="nCmdShow">How the window will be displayed</param>
+            <returns></returns>
+        </member>
+        <member name="F:Win32API.Window.SW_HIDE">
+            <summary>
+            The window will be hidden
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWNORMAL">
+            <summary>
+            The window will be shown normally and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_NORMAL">
+            <summary>
+            The window will be shown normally and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWMINIMIZED">
+            <summary>
+            The window will be shown minimized and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWMAXIMIZED">
+            <summary>
+            The window will be shown maximized and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_MAXIMIZE">
+            <summary>
+            The window will be shown maximized and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWNOACTIVATE">
+            <summary>
+            The window will be shown in recent state, but will not be activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOW">
+            <summary>
+            The window will be shown normally and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_MINIMIZE">
+            <summary>
+            The window will be shown minimized, but will not be activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWMINNOACTIVE">
+            <summary>
+            The window will be shown minimized, but will not be activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWNA">
+            <summary>
+            The window will be shown in recent state, but will not be activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_RESTORE">
+            <summary>
+            The window will be shown normally and activated
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.SW_SHOWDEFAULT">
+            <summary>
+            The window will be shown normally and activated
+            </summary>
+        </member>
+        <member name="M:Win32API.Window.GetDesktopWindow">
+            <summary>
+            Retrieve handle of the desktop window
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Win32API.Window.WM_USER">
+            <summary>
+            The win32 WM_USER, private window messages should be defined between WM_USER and 0x7FFF
+            </summary>
+        </member>
+        <member name="F:Win32API.Window.WM_APP">
+            <summary>
+            The win32 WM_APP, global window messages should be defined between WM_APP and 0xBFFF
+            </summary>
+        </member>
+        <member name="M:Win32API.Window.SendMessage(System.IntPtr,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Send a message to a window, the function will not return until the event handler returns
+            </summary>
+            <param name="hWnd">Handle of the window which will receive the message</param>
+            <param name="Msg">Message identity</param>
+            <param name="wParam">Win32 WPARAM</param>
+            <param name="lParam">Win32 LPARAM</param>
+            <returns>Return the value returned by the event handler</returns>
+        </member>
+        <member name="M:Win32API.Window.PostMessage(System.IntPtr,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Post a message to a window, the function returns immediately
+            </summary>
+            <param name="hWnd">Handle of the window which will receive the message</param>
+            <param name="Msg">Message identity</param>
+            <param name="wParam">Win32 WPARAM</param>
+            <param name="lParam">Win32 LPARAM</param>
+            <returns>Return non-zero if the function successful, return zero if failed</returns>
         </member>
     </members>
 </doc>
